@@ -16,7 +16,6 @@ public class ClientActor extends AbstractActor {
     public ClientActor(int clientId, ActorRef queue){
         this.clientId = clientId;
         this.queue = queue;
-        //TODO connect to queue
         makeCall();
     }
 
@@ -80,6 +79,6 @@ public class ClientActor extends AbstractActor {
         System.out.println("Operator hang up - client" + clientId);
         operator = null;
         ActorSystem system = getContext().getSystem();
-        system.stop(getSelf()); // or just send signal about the end of the call????
+        system.stop(getSelf());
     }
 }

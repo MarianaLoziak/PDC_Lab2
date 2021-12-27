@@ -11,7 +11,6 @@ import com.company.Messages.ServeCLient;
 
 import java.time.Duration;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class OperatorActor extends AbstractActor {
 
@@ -22,7 +21,6 @@ public class OperatorActor extends AbstractActor {
     public OperatorActor(int id, ActorRef queue){
         this.operatorId = id;
         this.queue = queue;
-        //TODO create message about free operator
         QueueIsEmpty message = new QueueIsEmpty();
         waitingForCients(message);
     }
@@ -60,15 +58,10 @@ public class OperatorActor extends AbstractActor {
     public void pickUpPhone(ServeCLient message){
         client = message.client;
         System.out.println("Client " + client.toString() + " speaking with operator " + operatorId );
-        /*Random random = new Random();
-        try {
-            Thread.sleep(random.nextInt(10000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
         ActorSystem system = getContext().getSystem();
-        long delay = ThreadLocalRandom.current().nextLong(2000, 10000);
-        system.scheduler().scheduleOnce(Duration.ofMillis(delay),
+        Random r = new Random();
+        system.scheduler().scheduleOnce(
+                Duration.ofMillis(r.nextInt(10000)),
                 this::hangUpPhone,
                 system.dispatcher());
 
