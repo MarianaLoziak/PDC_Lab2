@@ -59,6 +59,7 @@ public class OperatorActor extends AbstractActor {
     }
     public void pickUpPhone(ServeCLient message){
         client = message.client;
+        System.out.println("Client " + client.toString() + " speaking with operator " + operatorId );
         /*Random random = new Random();
         try {
             Thread.sleep(random.nextInt(10000));
@@ -74,8 +75,10 @@ public class OperatorActor extends AbstractActor {
     }
 
     public void hangUpPhone(){
+        client.tell(new OperatorEndCall(operatorId),getSelf());
         client = null;
-        new OperatorEndCall(operatorId);
 
+        QueueIsEmpty message = new QueueIsEmpty();
+        waitingForCients(message);
     }
 }
